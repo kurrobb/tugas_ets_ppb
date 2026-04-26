@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "381734872792",
+    "firebase_url": "https://tugas-ets-ppb-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tugas-ets-ppb",
+    "storage_bucket": "tugas-ets-ppb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381734872792:android:3bc246bf987604517b99ad",
+        "android_client_info": {
+          "package_name": "com.parkingfinder.parking_finder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2iDhwrC9l8cFXkuue3cEWrNcx5Q5D-eQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
