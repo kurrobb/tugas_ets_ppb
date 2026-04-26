@@ -1,30 +1,35 @@
-+# Parking Finder 🅿️
+# Parking Finder 🅿️
 
-Aplikasi crowdsourced untuk menemukan dan melaporkan ketersediaan parkir di sekitar lokasi pengguna.
+Aplikasi crowdsourced untuk menemukan dan melaporkan ketersediaan parkir di sekitar lokasi pengguna. Dibuat menggunakan Flutter dan Firebase.
 
-## Screenshots
+## 📱 Fitur Utama
 
-Aplikasi ini memiliki fitur:
-- 🗺️ **Peta Interaktif** — Google Maps dengan marker parkiran berwarna
+- 🗺️ **Peta Interaktif** — OpenStreetMap dengan marker parkiran berwarna berdasarkan status
+- 🔍 **Pencarian Parkiran** — Cari parkiran berdasarkan nama atau alamat
 - 📝 **CRUD Parkiran** — Tambah, edit, hapus, dan update status parkiran
+- 📍 **Map Picker** — Pilih lokasi parkiran langsung di peta
 - ⭐ **Favorit** — Bookmark parkiran favorit
-- 🔔 **Notifikasi** — Pengingat harian dan notifikasi kontribusi
+- 🔔 **Notifikasi** — Pengingat harian dan notifikasi saat menambahkan parkiran
 - 👤 **Profil** — Kelola akun dan lihat kontribusi
+- 🔐 **Autentikasi** — Login dan register dengan email & password
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Flutter** (latest stable)
-- **Firebase Auth** (email & password)
-- **Cloud Firestore** (database)
-- **Firebase Storage** (upload foto)
-- **Google Maps Flutter** (peta)
-- **Geolocator** (GPS)
-- **Flutter Local Notifications** (notifikasi)
-- **Provider** (state management)
+| Teknologi | Kegunaan |
+|-----------|----------|
+| **Flutter** | Framework UI cross-platform |
+| **Firebase Auth** | Autentikasi email & password |
+| **Cloud Firestore** | Database realtime (NoSQL) |
+| **Firebase Storage** | Upload foto parkiran |
+| **flutter_map + OpenStreetMap** | Peta interaktif (gratis, tanpa API key) |
+| **Geolocator** | GPS & lokasi pengguna |
+| **Flutter Local Notifications** | Notifikasi lokal |
+| **Provider** | State management |
+| **Google Fonts (Poppins)** | Custom typography |
 
 ---
 
-## 🔧 Setup Firebase
+## 🔧 Setup & Konfigurasi
 
 ### 1. Buat Project Firebase
 
@@ -42,47 +47,45 @@ Aplikasi ini memiliki fitur:
 1. Di Firebase Console → **Firestore Database** → **Create database**
 2. Pilih **Start in test mode** (untuk development)
 3. Pilih region terdekat (contoh: `asia-southeast2` untuk Jakarta)
-4. **PENTING** — Set Firestore Rules agar app bisa read/write:
-   - Buka tab **Rules** di Firestore
-   - Paste rules berikut:
-   ```
-   rules_version = '2';
-   service cloud.firestore {
-     match /databases/{database}/documents {
-       match /users/{userId} {
-         allow read, write: if request.auth != null;
-       }
-       match /parkings/{parkingId} {
-         allow read: if true;
-         allow create: if request.auth != null;
-         allow update, delete: if request.auth != null;
-       }
-       match /favorites/{userId} {
-         allow read, write: if request.auth != null && request.auth.uid == userId;
-       }
-     }
-   }
-   ```
-   - Klik **Publish**
+4. **PENTING** — Buka tab **Rules** dan paste:
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null;
+    }
+    match /parkings/{parkingId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+    match /favorites/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+5. Klik **Publish**
 
-#### Firebase Storage:
+#### Firebase Storage (opsional, untuk upload foto):
 1. Di Firebase Console → **Storage** → **Get started**
 2. Pilih **Start in test mode** (untuk development)
-3. **PENTING** — Set Storage Rules:
-   - Buka tab **Rules** di Storage
-   - Paste rules berikut:
-   ```
-   rules_version = '2';
-   service firebase.storage {
-     match /b/{bucket}/o {
-       match /parkings/{allPaths=**} {
-         allow read: if true;
-         allow write: if request.auth != null;
-       }
-     }
-   }
-   ```
-   - Klik **Publish**
+3. Buka tab **Rules** dan paste:
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /parkings/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
+```
+4. Klik **Publish**
+
+> **Catatan:** Jika Firebase Storage belum diaktifkan, aplikasi tetap berjalan — parkiran akan disimpan tanpa foto.
 
 ### 3. Tambahkan Android App
 
@@ -91,7 +94,7 @@ Aplikasi ini memiliki fitur:
 3. Download file `google-services.json`
 4. Letakkan file di: `android/app/google-services.json`
 
-### 4. Generate Firebase Options (Alternatif)
+### 4. Generate Firebase Options
 
 ```bash
 # Install FlutterFire CLI
@@ -100,14 +103,6 @@ dart pub global activate flutterfire_cli
 # Generate firebase_options.dart otomatis
 flutterfire configure
 ```
-
-### 5. Google Maps API Key
-
-1. Buka [Google Cloud Console](https://console.cloud.google.com/)
-2. Aktifkan **Maps SDK for Android**
-3. Buat API Key
-4. Buka `android/app/src/main/AndroidManifest.xml`
-5. Ganti `YOUR_GOOGLE_MAPS_API_KEY_HERE` dengan API key Anda
 
 ---
 
@@ -168,6 +163,7 @@ lib/
 │   │   ├── parking_detail_screen.dart
 │   │   ├── add_parking_screen.dart
 │   │   ├── edit_parking_screen.dart
+│   │   ├── map_picker_screen.dart
 │   │   ├── favorites_screen.dart
 │   │   └── profile_screen.dart
 │   └── widgets/
@@ -184,29 +180,35 @@ lib/
 ## 🚀 Cara Menjalankan
 
 ```bash
-# 1. Install dependencies
+# 1. Clone repository
+git clone <repository-url>
+cd tugas-ets
+
+# 2. Install dependencies
 flutter pub get
 
-# 2. Pastikan google-services.json sudah ada di android/app/
-# 3. Pastikan Google Maps API Key sudah di-set di AndroidManifest.xml
+# 3. Pastikan google-services.json sudah ada di android/app/
 
 # 4. Jalankan aplikasi
 flutter run
 ```
 
+> **Tidak perlu Google Maps API Key** — aplikasi menggunakan OpenStreetMap yang gratis dan tanpa API key.
+
 ---
 
 ## 📋 AndroidManifest Permissions
 
-Permission yang sudah dikonfigurasi:
-- `INTERNET` — Akses internet
-- `ACCESS_FINE_LOCATION` — GPS akurat
-- `ACCESS_COARSE_LOCATION` — GPS kasar
-- `CAMERA` — Akses kamera
-- `READ_EXTERNAL_STORAGE` — Akses galeri
-- `RECEIVE_BOOT_COMPLETED` — Notifikasi setelah reboot
-- `VIBRATE` — Getaran notifikasi
-- `SCHEDULE_EXACT_ALARM` — Penjadwalan notifikasi
+| Permission | Kegunaan |
+|-----------|----------|
+| `INTERNET` | Akses internet |
+| `ACCESS_FINE_LOCATION` | GPS akurat |
+| `ACCESS_COARSE_LOCATION` | GPS kasar |
+| `CAMERA` | Akses kamera untuk foto parkiran |
+| `READ_EXTERNAL_STORAGE` | Akses galeri |
+| `RECEIVE_BOOT_COMPLETED` | Notifikasi setelah reboot |
+| `VIBRATE` | Getaran notifikasi |
+| `SCHEDULE_EXACT_ALARM` | Penjadwalan notifikasi |
 
 ---
 
@@ -218,12 +220,14 @@ Permission yang sudah dikonfigurasi:
 - **Font**: Poppins (via Google Fonts)
 - **Cards**: Rounded corners 16px dengan shadow halus
 - **Status Badge**: Hijau (kosong), Merah (penuh), Abu-abu (unknown)
+- **Map Markers**: Bulat berwarna dengan shadow (hijau/merah/abu-abu)
 
 ---
 
 ## ⚠️ Catatan Penting
 
 1. **Firebase Config**: Pastikan `google-services.json` sudah ditambahkan sebelum build
-2. **Google Maps**: API key wajib diisi agar peta berfungsi
+2. **Firestore Rules**: Wajib di-set agar app bisa read/write data (lihat bagian Setup)
 3. **Location**: Izinkan akses lokasi saat pertama kali dibuka
-4. **minSdkVersion**: Project ini menggunakan `minSdk 21` (Android 5.0+)
+4. **Firebase Storage**: Opsional — jika belum diaktifkan, parkiran tetap bisa disimpan tanpa foto
+5. **minSdkVersion**: Project ini menggunakan `minSdk 21` (Android 5.0+)
