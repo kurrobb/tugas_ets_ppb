@@ -45,8 +45,6 @@ Aplikasi mobile untuk menemukan dan melaporkan ketersediaan parkir di sekitar lo
 | Geolocator | GPS & lokasi |
 | Image Picker | Kamera & galeri |
 | Flutter Local Notifications | Notifikasi lokal |
-| Provider | State management |
-| Google Fonts | Typography |
 
 ---
 
@@ -55,12 +53,6 @@ Aplikasi mobile untuk menemukan dan melaporkan ketersediaan parkir di sekitar lo
 ### 1. Setup CLI
 
 ```bash
-# Install Flutter (jika belum)
-# https://docs.flutter.dev/get-started/install
-
-# Install FlutterFire CLI
-dart pub global activate flutterfire_cli
-
 # Clone project
 git clone <repository-url>
 cd tugas-ets
