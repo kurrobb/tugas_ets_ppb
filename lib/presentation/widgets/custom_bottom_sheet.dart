@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../core/constants/app_colors.dart';
+import '../../core/app_colors.dart';
 import '../../data/models/parking_model.dart';
 import 'status_badge.dart';
 

@@ -35,7 +35,7 @@ class AppColors {
   static const Color error = Color(0xFFD32F2F);
   static const Color success = Color(0xFF388E3C);
 
-  /// Mengembalikan warna berdasarkan status parkiran
+  // Status parkiran
   static Color getStatusColor(String status) {
     switch (status) {
       case 'kosong':

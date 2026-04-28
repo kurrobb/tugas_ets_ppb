@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../../core/constants/app_colors.dart';
+import '../../core/app_colors.dart';
 import '../../data/repositories/auth_repository.dart';
 import 'home_screen.dart';
 
@@ -48,15 +48,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
     } catch (e) {
       if (!mounted) return;
-      // Cek apakah auth sebenarnya berhasil meskipun ada error
-      final authRepo = context.read<AuthRepository>();
-      if (authRepo.isLoggedIn) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-          (route) => false,
-        );
-        return;
-      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AuthRepository.getErrorMessage(e)),

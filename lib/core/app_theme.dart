@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants/app_colors.dart';
+import 'app_colors.dart';
 
 /// Tema aplikasi Parking Finder menggunakan Material 3
 class AppTheme {

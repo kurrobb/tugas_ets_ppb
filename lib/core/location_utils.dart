@@ -52,7 +52,7 @@ class LocationUtils {
     return degrees * pi / 180;
   }
 
-  /// Format jarak menjadi string yang mudah dibaca
+  /// jarak menjadi string
   static String formatDistance(double distanceKm) {
     if (distanceKm < 1) {
       return '${(distanceKm * 1000).round()} m';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../core/constants/app_colors.dart';
+import '../../core/app_colors.dart';
 
 /// Widget badge status parkiran (kosong/penuh/unknown)
 class StatusBadge extends StatelessWidget {

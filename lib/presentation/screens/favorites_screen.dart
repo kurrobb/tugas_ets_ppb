@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/utils/location_utils.dart';
+import '../../core/app_colors.dart';
+import '../../core/location_utils.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/parking_repository.dart';
 import '../../data/repositories/favorite_repository.dart';

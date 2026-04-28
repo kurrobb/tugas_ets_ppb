@@ -2,14 +2,11 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-/// Service untuk upload file ke Firebase Storage
 class StorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  /// Cek apakah Firebase Storage aktif
   Future<bool> isStorageAvailable() async {
     try {
-      // Coba list root — kalau bucket tidak ada, akan throw error
       await _storage.ref().listAll();
       return true;
     } catch (e) {
@@ -18,7 +15,6 @@ class StorageService {
     }
   }
 
-  /// Upload foto parkiran ke Firebase Storage dan return URL
   Future<String> uploadParkingPhoto(File imageFile, String fileName) async {
     try {
       final ref = _storage.ref().child('parkings/$fileName');
@@ -34,7 +30,6 @@ class StorageService {
     }
   }
 
-  /// Menghapus foto dari Firebase Storage berdasarkan URL
   Future<void> deletePhoto(String photoUrl) async {
     try {
       if (photoUrl.isEmpty) return;
@@ -42,8 +37,6 @@ class StorageService {
       await ref.delete();
     } catch (e) {
       debugPrint('Error deleting photo: $e');
-      // Non-critical, silakan dilanjutkan
     }
   }
 }
-

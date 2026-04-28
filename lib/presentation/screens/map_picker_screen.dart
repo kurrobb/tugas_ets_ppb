@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/utils/location_utils.dart';
+import '../../core/app_colors.dart';
+import '../../core/location_utils.dart';
 
 /// Halaman untuk memilih lokasi parkiran di peta
 /// Mengembalikan LatLng yang dipilih user

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
-import '../../core/constants/app_colors.dart';
+import '../../core/app_colors.dart';
 import '../../data/models/parking_model.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/parking_repository.dart';

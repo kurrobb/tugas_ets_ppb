@@ -26,7 +26,7 @@ class ParkingRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Mengambil semua data parkiran dari Firestore (realtime)
+  /// Mengambil semua data parkiran dari Firestore 
   Stream<List<ParkingModel>> getParkingsStream() {
     return _firestore
         .collection('parkings')

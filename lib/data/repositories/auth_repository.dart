@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 
-/// Repository untuk autentikasi pengguna
 class AuthRepository extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -11,7 +10,7 @@ class AuthRepository extends ChangeNotifier {
   User? _user;
   UserModel? _userModel;
   bool _isLoading = false;
-  bool _isPerformingAuthAction = false; // Guard untuk cegah race condition
+  bool _isPerformingAuthAction = false;
 
   User? get user => _user;
   UserModel? get userModel => _userModel;
@@ -21,11 +20,9 @@ class AuthRepository extends ChangeNotifier {
   AuthRepository() {
     _user = _auth.currentUser;
 
-    // Listen ke perubahan auth state
     _auth.authStateChanges().listen((User? user) {
       _user = user;
       if (user != null && !_isPerformingAuthAction) {
-        // Hanya auto-load kalau bukan sedang signUp/signIn
         _loadUserData();
       } else if (user == null) {
         _userModel = null;
@@ -38,7 +35,6 @@ class AuthRepository extends ChangeNotifier {
     }
   }
 
-  /// Memuat data user dari Firestore
   Future<void> _loadUserData() async {
     if (_user == null) return;
     try {
@@ -46,13 +42,11 @@ class AuthRepository extends ChangeNotifier {
       if (doc.exists) {
         _userModel = UserModel.fromFirestore(doc);
       } else {
-        // Buat fallback dari data Auth
         _userModel = UserModel(
           id: _user!.uid,
           name: _user!.displayName ?? _user!.email?.split('@').first ?? 'User',
           email: _user!.email ?? '',
         );
-        // Coba simpan ke Firestore (silent)
         try {
           await _firestore
               .collection('users')
@@ -74,7 +68,6 @@ class AuthRepository extends ChangeNotifier {
     }
   }
 
-  /// Login dengan email dan password
   Future<void> signIn(String email, String password) async {
     _isLoading = true;
     _isPerformingAuthAction = true;
@@ -93,7 +86,6 @@ class AuthRepository extends ChangeNotifier {
     }
   }
 
-  /// Register user baru
   Future<void> signUp(String name, String email, String password) async {
     _isLoading = true;
     _isPerformingAuthAction = true;
@@ -105,7 +97,6 @@ class AuthRepository extends ChangeNotifier {
       );
       _user = credential.user;
 
-      // Simpan data user ke Firestore
       final userModel = UserModel(
         id: _user!.uid,
         name: name.trim(),
@@ -129,7 +120,6 @@ class AuthRepository extends ChangeNotifier {
     }
   }
 
-  /// Logout
   Future<void> signOut() async {
     await _auth.signOut();
     _user = null;
@@ -137,7 +127,6 @@ class AuthRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Mendapatkan pesan error yang user-friendly
   static String getErrorMessage(dynamic error) {
     String code = '';
     String message = '';
