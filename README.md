@@ -50,7 +50,7 @@ Aplikasi mobile untuk menemukan dan melaporkan ketersediaan parkir di sekitar lo
 
 ## 🔧 Setup
 
-### 1. Setup CLI
+### 1. Setup Project
 
 ```bash
 # Clone project
@@ -60,7 +60,7 @@ cd tugas-ets
 # Install dependencies
 flutter pub get
 
-# Generate firebase_options.dart (hubungkan ke project Firebase)
+# Generate firebase_options.dart  
 flutterfire configure
 ```
 
