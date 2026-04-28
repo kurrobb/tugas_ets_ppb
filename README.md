@@ -54,7 +54,7 @@ Aplikasi mobile untuk menemukan dan melaporkan ketersediaan parkir di sekitar lo
 
 ```bash
 # Clone project
-git clone <repository-url>
+git clone https://github.com/kurrobb/tugas_ets_ppb
 cd tugas-ets
 
 # Install dependencies
