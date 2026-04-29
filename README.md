@@ -131,47 +131,6 @@ favorites/{userId}
   - parkingIds: List<String>
 ```
 
----
-
-## 📁 Struktur Folder
-
-```
-lib/
-├── main.dart
-├── firebase_options.dart
-├── core/
-│   ├── app_colors.dart
-│   ├── app_theme.dart
-│   └── location_utils.dart
-├── data/
-│   ├── models/
-│   │   ├── parking_model.dart
-│   │   └── user_model.dart
-│   └── repositories/
-│       ├── auth_repository.dart
-│       ├── parking_repository.dart
-│       └── favorite_repository.dart
-├── presentation/
-│   ├── screens/
-│   │   ├── splash_screen.dart
-│   │   ├── login_screen.dart
-│   │   ├── register_screen.dart
-│   │   ├── home_screen.dart
-│   │   ├── parking_list_screen.dart
-│   │   ├── parking_detail_screen.dart
-│   │   ├── add_parking_screen.dart
-│   │   ├── edit_parking_screen.dart
-│   │   ├── map_picker_screen.dart
-│   │   ├── favorites_screen.dart
-│   │   └── profile_screen.dart
-│   └── widgets/
-│       ├── parking_card.dart
-│       ├── status_badge.dart
-│       └── custom_bottom_sheet.dart
-└── services/
-    ├── notification_service.dart
-    └── storage_service.dart
-```
 
 ---
 
