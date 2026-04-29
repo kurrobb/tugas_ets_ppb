@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// Model data parkiran
 class ParkingModel {
   final String id;
   final String name;
   final String address;
   final double lat;
   final double lng;
-  final String type; // 'motor', 'mobil', 'both'
+  final String type;
   final int capacity;
-  final String status; // 'kosong', 'penuh', 'unknown'
+  final String status;
   final String photoUrl;
   final String addedBy;
+  final String addedByName;
   final Timestamp updatedAt;
 
   ParkingModel({
@@ -25,10 +25,10 @@ class ParkingModel {
     required this.status,
     required this.photoUrl,
     required this.addedBy,
+    this.addedByName = '',
     required this.updatedAt,
   });
 
-  /// Membuat ParkingModel dari document Firestore
   factory ParkingModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return ParkingModel(
@@ -42,11 +42,11 @@ class ParkingModel {
       status: data['status'] ?? 'unknown',
       photoUrl: data['photoUrl'] ?? '',
       addedBy: data['addedBy'] ?? '',
+      addedByName: data['addedByName'] ?? '',
       updatedAt: data['updatedAt'] ?? Timestamp.now(),
     );
   }
 
-  /// Konversi ke Map untuk disimpan ke Firestore
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -58,11 +58,11 @@ class ParkingModel {
       'status': status,
       'photoUrl': photoUrl,
       'addedBy': addedBy,
+      'addedByName': addedByName,
       'updatedAt': updatedAt,
     };
   }
 
-  /// Membuat copyWith untuk update data
   ParkingModel copyWith({
     String? id,
     String? name,
@@ -74,6 +74,7 @@ class ParkingModel {
     String? status,
     String? photoUrl,
     String? addedBy,
+    String? addedByName,
     Timestamp? updatedAt,
   }) {
     return ParkingModel(
@@ -87,11 +88,11 @@ class ParkingModel {
       status: status ?? this.status,
       photoUrl: photoUrl ?? this.photoUrl,
       addedBy: addedBy ?? this.addedBy,
+      addedByName: addedByName ?? this.addedByName,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
-  /// Mendapatkan label tipe kendaraan yang readable
   String get typeLabel {
     switch (type) {
       case 'motor':
@@ -105,7 +106,6 @@ class ParkingModel {
     }
   }
 
-  /// Mendapatkan label status yang readable
   String get statusLabel {
     switch (status) {
       case 'kosong':

@@ -182,6 +182,7 @@ class _AddParkingScreenState extends State<AddParkingScreen> {
         status: 'unknown',
         photoUrl: photoUrl,
         addedBy: authRepo.user!.uid,
+        addedByName: authRepo.userModel?.name ?? authRepo.user!.displayName ?? authRepo.user!.email?.split('@').first ?? 'Pengguna',
         updatedAt: Timestamp.now(),
       );
 

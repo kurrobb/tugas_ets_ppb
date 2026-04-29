@@ -35,36 +35,55 @@ class AuthRepository extends ChangeNotifier {
     }
   }
 
+  String _getUserName() {
+    return _user!.displayName ??
+        _user!.email?.split('@').first ??
+        'User';
+  }
+
   Future<void> _loadUserData() async {
     if (_user == null) return;
     try {
+      await _user!.reload();
+      _user = _auth.currentUser;
+
       final doc = await _firestore.collection('users').doc(_user!.uid).get();
       if (doc.exists) {
         _userModel = UserModel.fromFirestore(doc);
       } else {
         _userModel = UserModel(
           id: _user!.uid,
-          name: _user!.displayName ?? _user!.email?.split('@').first ?? 'User',
+          name: _getUserName(),
           email: _user!.email ?? '',
         );
-        try {
-          await _firestore
-              .collection('users')
-              .doc(_user!.uid)
-              .set(_userModel!.toMap());
-        } catch (e) {
-          debugPrint('Warning: Could not save user doc: $e');
-        }
+        await _writeUserToFirestore(_userModel!);
       }
       notifyListeners();
     } catch (e) {
       debugPrint('Error loading user data: $e');
       _userModel = UserModel(
         id: _user!.uid,
-        name: _user!.displayName ?? _user!.email?.split('@').first ?? 'User',
+        name: _getUserName(),
         email: _user!.email ?? '',
       );
       notifyListeners();
+    }
+  }
+
+  Future<void> _writeUserToFirestore(UserModel userModel) async {
+    for (int i = 0; i < 3; i++) {
+      try {
+        await _firestore
+            .collection('users')
+            .doc(userModel.id)
+            .set(userModel.toMap());
+        return;
+      } catch (e) {
+        debugPrint('Firestore write attempt ${i + 1} failed: $e');
+        if (i < 2) {
+          await Future.delayed(Duration(milliseconds: 500 * (i + 1)));
+        }
+      }
     }
   }
 
@@ -79,6 +98,12 @@ class AuthRepository extends ChangeNotifier {
       );
       _user = credential.user;
       await _loadUserData();
+    } catch (e) {
+      if (_user != null) {
+        debugPrint('Non-critical error during signIn (auth succeeded): $e');
+      } else {
+        rethrow;
+      }
     } finally {
       _isLoading = false;
       _isPerformingAuthAction = false;
@@ -97,22 +122,32 @@ class AuthRepository extends ChangeNotifier {
       );
       _user = credential.user;
 
+      try {
+        await _user!.updateDisplayName(name.trim());
+        await _user!.reload();
+        _user = _auth.currentUser;
+      } catch (_) {}
+
       final userModel = UserModel(
         id: _user!.uid,
         name: name.trim(),
         email: email.trim(),
       );
 
-      try {
-        await _firestore
-            .collection('users')
-            .doc(_user!.uid)
-            .set(userModel.toMap());
-      } catch (firestoreError) {
-        debugPrint('Warning: Firestore write failed: $firestoreError');
-      }
+      await _writeUserToFirestore(userModel);
 
       _userModel = userModel;
+    } catch (e) {
+      if (_user != null) {
+        debugPrint('Non-critical error during signUp (auth succeeded): $e');
+        _userModel ??= UserModel(
+          id: _user!.uid,
+          name: name.trim(),
+          email: email.trim(),
+        );
+      } else {
+        rethrow;
+      }
     } finally {
       _isLoading = false;
       _isPerformingAuthAction = false;

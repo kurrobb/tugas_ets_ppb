@@ -37,8 +37,11 @@ class _ParkingDetailScreenState extends State<ParkingDetailScreen> {
     _loadAdderName();
   }
 
-  /// Memuat nama user yang menambahkan parkiran ini
   Future<void> _loadAdderName() async {
+    if (_parking.addedByName.isNotEmpty) {
+      if (mounted) setState(() => _adderName = _parking.addedByName);
+      return;
+    }
     try {
       final doc = await FirebaseFirestore.instance
           .collection('users')
