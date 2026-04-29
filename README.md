@@ -4,7 +4,7 @@ Aplikasi mobile untuk menemukan dan melaporkan ketersediaan parkir di sekitar lo
 
 ## 📹 Demo Video
 
-> **[Klik di sini untuk menonton demo video aplikasi](LINK_VIDEO_DEMO)**
+> **[Klik di sini untuk menonton demo video aplikasi](https://drive.google.com/file/d/18cSwxUUN6m8u_l6MY6BGOeHicQmvJFn_/view?usp=sharing)**
 
 ---
 
